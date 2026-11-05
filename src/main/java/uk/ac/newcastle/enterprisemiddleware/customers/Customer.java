@@ -26,6 +26,7 @@ public class Customer {
     private String email;
 
     @NotBlank 
+    @Size(max=11, min=11)
     @Pattern(
         regexp = "^0[0-9]{10}$",
         message = "Phone number must contain 11 digits and start with 0"
