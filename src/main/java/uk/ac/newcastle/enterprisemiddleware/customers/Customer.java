@@ -1,11 +1,11 @@
 package uk.ac.newcastle.enterprisemiddleware.customers;
-
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -16,15 +16,20 @@ public class Customer {
     private Long id;
 
     @NotBlank 
-    @Pattern(regexp = "^[a-zA-Z]+$", message="Please provide your name")
+    @Size(max=49)
+    @Pattern(regexp = "^[a-zA-Z]+(?: [a-zA-Z]+)*$", message = "Please provide your first and last name")
     private String name;
     
     @Email(message = "Please provide a valid email address")
     @NotBlank 
+    @Column(unique = true, nullable = false)
     private String email;
 
     @NotBlank 
-    @Pattern(regexp = "^[0-9]*$", message="Please provide your phone number")
+    @Pattern(
+        regexp = "^0[0-9]{10}$",
+        message = "Phone number must contain 11 digits and start with 0"
+    )
     private String phoneNumber;
 
 
@@ -36,6 +41,10 @@ public class Customer {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
