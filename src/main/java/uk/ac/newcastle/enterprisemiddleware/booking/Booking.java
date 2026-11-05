@@ -5,11 +5,15 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Future;
-import javax.validation.constraints.NotBlank;
-
 import io.smallrye.common.constraint.NotNull;
+import uk.ac.newcastle.enterprisemiddleware.customers.Customer;
+import uk.ac.newcastle.enterprisemiddleware.hotel.Hotel;
 
 @Entity 
 @Table(
@@ -22,31 +26,52 @@ import io.smallrye.common.constraint.NotNull;
     }
 )
 public class Booking {
-    @NotBlank 
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
-    private Long customerId;
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
     
-    @JoinColumn(name = "hotel_id", referencedColumnName = "id" , nullable = false)
-    private Long hotelId;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
 
     @NotNull 
     @Column(name ="date", nullable = false)
     @Future(message = "The booking date must be in the future time")
-    private LocalDate futurDate;
+    private LocalDate futureDate;
 
     public Booking() {
 
     };
 
     public Booking(LocalDate futureDate) {
-        this.futurDate = futureDate;
+        this.futureDate = futureDate;
     }
 
-    public Long getCustomerId() { return customerId; };
-    public Long getHotelId() { return hotelId; }
-    public LocalDate getFutuDate() { return futurDate; }
+    public Customer getCustomer() {
+        return customer;
+    }
+    public Hotel getHotel() {
+        return hotel;
+    }
+    public Long getId() {
+        return id;
+    }
 
-    public void setFutureDate(LocalDate date) { futurDate = date; }
+    public LocalDate getFutuDate() { return futureDate; }
+
+    public void setFutureDate(LocalDate date) { futureDate = date; }
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
 
 
 }
