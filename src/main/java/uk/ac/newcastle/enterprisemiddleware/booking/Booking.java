@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Future;
-import io.smallrye.common.constraint.NotNull;
+import javax.validation.constraints.NotNull;
 import uk.ac.newcastle.enterprisemiddleware.customers.Customer;
 import uk.ac.newcastle.enterprisemiddleware.hotel.Hotel;
 
@@ -49,7 +49,9 @@ public class Booking {
 
     };
 
-    public Booking(LocalDate futureDate) {
+    public Booking(Customer customer, Hotel hotel, LocalDate futureDate) {
+        this.customer = customer;
+        this.hotel = hotel;
         this.futureDate = futureDate;
     }
 
@@ -63,7 +65,7 @@ public class Booking {
         return id;
     }
 
-    public LocalDate getFutuDate() { return futureDate; }
+    public LocalDate getFutureDate() { return futureDate; }
 
     public void setFutureDate(LocalDate date) { futureDate = date; }
     public void setCustomer(Customer customer) {
