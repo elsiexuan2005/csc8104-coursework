@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.validation.ConstraintViolationException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -74,6 +75,21 @@ public class BookingRepository {
 
         return booking;
     }
+
+    boolean existsByHotelAndDate(Long hotelId, LocalDate date) {
+
+        Long count = em.createQuery(
+            "SELECT COUNT(b) FROM Booking b " +
+            "WHERE b.hotel.id = :hotelId AND b.futureDate = :date",
+            Long.class
+        )
+        .setParameter("hotelId", hotelId)
+        .setParameter("date", date)
+        .getSingleResult();
+    
+        return count > 0;
+    }
+
 
 }
 

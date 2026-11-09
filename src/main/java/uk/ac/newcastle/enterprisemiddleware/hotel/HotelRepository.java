@@ -44,6 +44,10 @@ public class HotelRepository {
 
     }
 
+    public Hotel findById(Long id) {
+        return em.find(Hotel.class, id);
+    }
+
 
     
 }

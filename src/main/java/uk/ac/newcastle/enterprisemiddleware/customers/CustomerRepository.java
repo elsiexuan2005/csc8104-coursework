@@ -44,6 +44,10 @@ public class CustomerRepository {
 
     }
 
+    public Customer findById(Long id) {
+        return em.find(Customer.class, id);
+    }
+
 
 
 
