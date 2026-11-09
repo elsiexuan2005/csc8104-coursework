@@ -38,17 +38,21 @@ public class BookingRepository {
     }
 
     /**
-     * <p>Returns a List of all persisted {@link Booking} objects by customer id.</p>
+     * Returns all bookings made by a particular customer.
      *
-     * @return List of booking objects by customer id
+     * @param customerId The ID of the customer
+     * @return A list of bookings belonging to that customer
      */
 
     List<Booking> findAllBookingsByCustomerId(Long customerId) {
         TypedQuery<Booking> query = em.createNamedQuery(Booking.FIND_BY_CUSTOMER, Booking.class);
+        query.setParameter("customerId", customerId);
         return query.getResultList();
 
     }
-
+    Booking findById(Long id) {
+        return em.find(Booking.class, id);
+    }
 
 
     /**
