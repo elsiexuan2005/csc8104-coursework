@@ -38,16 +38,18 @@ public class BookingRepository {
     }
 
     /**
-     * <p>Returns a List of all persisted {@link Booking} objects.</p>
+     * <p>Returns a List of all persisted {@link Booking} objects by customer id.</p>
      *
-     * @return List of booking objects
+     * @return List of booking objects by customer id
      */
 
-    List<Booking> findAllBookings() {
-        TypedQuery<Booking> query = em.createNamedQuery(Booking.FIND_ALL, Booking.class);
+    List<Booking> findAllBookingsByCustomerId(Long customerId) {
+        TypedQuery<Booking> query = em.createNamedQuery(Booking.FIND_BY_CUSTOMER, Booking.class);
         return query.getResultList();
 
     }
+
+
 
     /**
      * <p>Deletes the provided Booking object from the application database if found there</p>

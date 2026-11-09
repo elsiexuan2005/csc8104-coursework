@@ -19,7 +19,10 @@ import uk.ac.newcastle.enterprisemiddleware.hotel.Hotel;
 
 @Entity 
 @NamedQueries({
-    @NamedQuery(name = Booking.FIND_ALL, query = "SELECT b FROM Booking b"),
+    @NamedQuery(
+        name = Booking.FIND_BY_CUSTOMER,
+        query = "SELECT b FROM Booking b WHERE b.customer.id = :customerId"
+    )
 })
 @Table(
     name = "booking",
@@ -31,7 +34,7 @@ import uk.ac.newcastle.enterprisemiddleware.hotel.Hotel;
     }
 )
 public class Booking {
-    public static final String FIND_ALL = "Booking.findAll";
+    public static final String FIND_BY_CUSTOMER = "Booking.findByCustomer";
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
