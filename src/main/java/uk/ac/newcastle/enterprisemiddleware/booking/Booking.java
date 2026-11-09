@@ -10,12 +10,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import uk.ac.newcastle.enterprisemiddleware.customers.Customer;
 import uk.ac.newcastle.enterprisemiddleware.hotel.Hotel;
 
 @Entity 
+@NamedQueries({
+    @NamedQuery(name = Booking.FIND_ALL, query = "SELECT b FROM Booking b"),
+})
 @Table(
     name = "booking",
     uniqueConstraints = {
@@ -26,6 +31,7 @@ import uk.ac.newcastle.enterprisemiddleware.hotel.Hotel;
     }
 )
 public class Booking {
+    public static final String FIND_ALL = "Booking.findAll";
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
