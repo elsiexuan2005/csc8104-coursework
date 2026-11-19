@@ -3,22 +3,33 @@ package uk.ac.newcastle.enterprisemiddleware.customers;
 
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
+import javax.transaction.Transactional;
+import uk.ac.newcastle.enterprisemiddleware.booking.Booking;
 
 @Dependent
 public class CustomerService {
 
     @Inject
     CustomerRepository repository;
+
+    @Inject
+    @Named("logger")
+    Logger log;
 
     @Inject
     Validator validator;
@@ -57,6 +68,23 @@ public class CustomerService {
         }
 
         return repository.create(customer);
+    }
+
+    // Delete customer
+    @Transactional
+    public void delete(Long cid) throws Exception {
+
+        if (cid == null) {
+            throw new BadRequestException("Customer ID is required");
+        }
+
+        Customer customer = repository.findById(cid);
+
+        if (customer == null) {
+            throw new NotFoundException("Customer not found");
+        }
+
+        repository.delete(customer);
     }
 
 

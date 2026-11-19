@@ -7,8 +7,10 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 
@@ -54,4 +56,35 @@ public class HotelRestService {
 
         return Response.ok(hotels).build();
     }
+
+
+    /**
+     * Deletes a hotel using the provided ID.
+     *
+     * @param id The ID of the hotel to be deleted
+     * @return A Response indicating the outcome of the deletion
+     */
+    @DELETE
+    @Path("/{id:[0-9]+}")
+    @Operation(description = "Delete a Hotel from the database")
+    @APIResponses(value = {
+        @APIResponse(responseCode = "204",
+            description = "Hotel successfully deleted"),
+        @APIResponse(responseCode = "400",
+            description = "Invalid Hotel ID supplied"),
+        @APIResponse(responseCode = "404",
+            description = "Hotel not found"),
+        @APIResponse(responseCode = "500",
+            description = "Unexpected server error")
+    })
+    public Response deleteHotel(
+        @Parameter(description = "ID of Hotel to be deleted", required = true)
+        @Schema(minimum = "0")
+        @PathParam("id") Long id) throws Exception {
+
+        service.delete(id);
+
+        return Response.noContent().build();
+    }
+
 }

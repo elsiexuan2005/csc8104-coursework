@@ -1,5 +1,6 @@
 package uk.ac.newcastle.enterprisemiddleware.hotel;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,10 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
+import java.util.*;
+import uk.ac.newcastle.enterprisemiddleware.booking.Booking;
 @Entity 
 @NamedQueries({
     @NamedQuery(name = Hotel.FIND_ALL, query = "SELECT h FROM Hotel h"),
@@ -37,7 +40,11 @@ public class Hotel {
     @NotBlank 
     @Size(max=6, min=6)
     @Pattern(regexp="^[A-Za-z0-9]*$")
+
     private String postcode;
+
+    @OneToMany(mappedBy="hotel", cascade = CascadeType.REMOVE)
+    private List<Booking> bookings = new ArrayList<>();
 
     public Hotel() {
 

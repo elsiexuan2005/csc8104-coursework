@@ -11,8 +11,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+
+import uk.ac.newcastle.enterprisemiddleware.customers.Customer;
 
 @Dependent
 public class HotelService {
@@ -57,6 +60,23 @@ public class HotelService {
         }
 
         return repository.create(hotel);
+    }
+
+    // Delete hotel
+    @Transactional
+    public void delete(Long hid) throws Exception {
+
+        if (hid == null) {
+            throw new BadRequestException("Hotel ID is required");
+        }
+
+        Hotel hotel = repository.findById(hid);
+
+        if (hotel == null) {
+            throw new NotFoundException("Hotel not found");
+        }
+
+        repository.delete(hotel);
     }
 
     public List<Hotel> findAllHotels() {

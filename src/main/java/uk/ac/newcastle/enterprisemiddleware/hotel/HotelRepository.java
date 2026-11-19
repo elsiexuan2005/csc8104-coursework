@@ -2,17 +2,22 @@ package uk.ac.newcastle.enterprisemiddleware.hotel;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.validation.ConstraintViolationException;
-
 import java.util.List;
+import java.util.logging.Logger;
 
 @RequestScoped
 public class HotelRepository {
 
     @Inject
     EntityManager em;
+
+    @Inject
+    @Named("logger")
+    Logger log;
 
     /**
      * <p>Persists the provided hotel object to the application database using the EntityManager.</p>
@@ -47,6 +52,28 @@ public class HotelRepository {
     public Hotel findById(Long id) {
         return em.find(Hotel.class, id);
     }
+
+    /**
+     * Deletes the provided Hotel object from the application database
+     * if it exists.
+     *
+     * @param hotel The Hotel object to be removed from the database
+     * @throws Exception If an error occurs during deletion
+     */
+    void delete(Hotel hotel) throws Exception {
+
+        log.info("HotelRepository.delete() - Deleting " + hotel.getName());
+
+        if (hotel.getId() != null) {
+
+            // Obtain a managed entity before removing it
+            em.remove(em.merge(hotel));
+
+        } else {
+            log.info("HotelRepository.delete() - No ID was found, so cannot delete.");
+        }
+    }
+
 
 
     

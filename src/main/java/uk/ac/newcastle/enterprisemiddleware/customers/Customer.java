@@ -1,4 +1,7 @@
 package uk.ac.newcastle.enterprisemiddleware.customers;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,10 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import uk.ac.newcastle.enterprisemiddleware.booking.Booking;
 
 @Entity 
 @NamedQueries({
@@ -40,6 +45,9 @@ public class Customer {
         message = "Phone number must contain 11 digits and start with 0"
     )
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE) 
+    private List<Booking> bookings = new ArrayList<>();
 
 
     protected Customer() {
